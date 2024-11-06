@@ -11,7 +11,7 @@ class Player
     {
         CurrentRoom = null;
         health = 100;
-        amount = 10;
+        amount = 30;
     }
 
     public void Damage(int amount)
