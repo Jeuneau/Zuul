@@ -6,6 +6,9 @@ class Game
 	private Parser parser;
 	private Player player;
 
+	// Private fields
+	
+
 	// Constructor
 	public Game()
 	{
@@ -17,7 +20,7 @@ class Game
 	// Initialise the Rooms (and the Items)
 	private void CreateRooms()
 	{
-		// Create the rooms
+		
 		Room outside = new Room("outside the main entrance of the university");
 		Room theatre = new Room("in a lecture theatre");
 		Room pub = new Room("in the campus pub");
@@ -59,14 +62,33 @@ class Game
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the player wants to quit.
 		bool finished = false;
-		while (!finished)
+		while (!finished && player.health > 0)
 		{
 			Command command = parser.GetCommand();
 			finished = ProcessCommand(command);
 		}
-		Console.WriteLine("Thank you for playing.");
+		Console.WriteLine("You died. Thank you for playing.");
 		Console.WriteLine("Press [Enter] to continue.");
 		Console.ReadLine();
+
+		
+	//Win scenario
+		/*if (room == "lab" && player.health > 0 && player.hasKey)
+		{
+			Console.WriteLine("Congratulations! You have found the key and successfully escaped the university!");
+			Console.WriteLine("Press [Enter] to continue.");
+			Console.ReadLine();
+			Environment.Exit(0); // End the game
+		}
+		else if (room == "lab" && player.health > 0)
+		{
+			Console.WriteLine("You have successfully escaped the university!");
+			Console.WriteLine("Press [Enter] to continue.");
+			Console.ReadLine();
+			Environment.Exit(0); // End the game
+		}*/
+		
+
 	}
 
 	// Print out the opening message for the player.

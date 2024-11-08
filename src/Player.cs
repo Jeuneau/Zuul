@@ -3,8 +3,10 @@ class Player
     // auto property
     public Room CurrentRoom { get; set; }
     public Room currentRoom;
-    public int health;
+    public int health { get; set; }
     private int amount;
+    public bool isAlive;
+    public bool hasKey { get; set; }
 
     // constructor
     public Player()
@@ -28,7 +30,8 @@ class Player
    {
        if (health <= 0)
        {
-           Console.WriteLine("You have died.");
+            isAlive = false;
+            Console.WriteLine("You have died.");
        }
    }
 }
