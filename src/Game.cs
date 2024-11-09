@@ -1,10 +1,14 @@
 using System;
+using System.Runtime;
 
 class Game
 {
 	// Private fields
 	private Parser parser;
 	private Player player;
+	private Inventory inventory;
+	
+
 
 	// Private fields
 	
@@ -13,8 +17,11 @@ class Game
 	public Game()
 	{
 		parser = new Parser();
+		inventory = new Inventory(100); // Assuming 100 is the max weight
 		player = new Player();
 		CreateRooms();
+		
+		
 	}
 
 	// Initialise the Rooms (and the Items)
@@ -132,6 +139,12 @@ class Game
 			case "status":
 				Status(command);
 				break;
+			case "put":
+				inventory.Put("itemID", new Item("itemName", 1)); // Replace "itemID" with the actual item ID
+				break;
+			case "get":
+				inventory.Get("itemID"); // Replace "itemID" with the actual item ID
+				break;
 		}
 
 		return wantToQuit;
@@ -175,7 +188,7 @@ class Game
 
 		player.currentRoom = nextRoom;
 		Console.WriteLine(player.currentRoom.GetLongDescription());
-		player.health-=10;
+		player.health -= 10;
 	}
 
 	private void Look(Command command)
@@ -187,4 +200,6 @@ class Game
 	{
 		Console.WriteLine("Your health is: " + player.health);
 	}
+
+	
 }

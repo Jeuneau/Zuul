@@ -4,7 +4,7 @@ class Player
     public Room CurrentRoom { get; set; }
     public Room currentRoom;
     public int health { get; set; }
-    private int amount;
+    public int amount { get; set; }
     public bool isAlive;
     public bool hasKey { get; set; }
 
