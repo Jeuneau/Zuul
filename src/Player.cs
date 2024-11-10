@@ -8,6 +8,7 @@ class Player
     public bool isAlive;
     public bool hasKey { get; set; }
     private Inventory backpack;
+    private Item item;
 
     // constructor
     public Player()
@@ -16,6 +17,7 @@ class Player
         health = 100;
         amount = 30;
         backpack = new Inventory(25);
+        item = new Item();
     }
 
     public void Damage(int amount)
@@ -41,7 +43,17 @@ class Player
     {
         // TODO implement:
         // Remove the Item from the Room
-        Item item = CurrentRoom.chest.Remove(itemName);
+        currentRoom.chest.RemoveItem(itemName);
+
+        // Put it in your backpack.
+        backpack.Put(itemName, item);
+
+        // Inspect returned values.
+        
+        // If the item doesn't fit your backpack, put it back in the chest.
+        // Communicate to the user what's happening.
+        // Return true/false for success/failure
+        
         // Put it in your backpack.
         // Inspect returned values.
         // If the item doesn't fit your backpack, put it back in the chest.

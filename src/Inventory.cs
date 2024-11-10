@@ -93,5 +93,12 @@ class Inventory
             return 0;
         }
     }
+
+    public void RemoveItem(string itemName)
+    {
+        // TODO implement:
+        // remove Item from items Dictionary
+        items.Remove(itemName);
+    }
     
 }

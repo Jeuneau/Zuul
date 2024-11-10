@@ -18,4 +18,8 @@ class Item
         this.v1 = v1;
         this.v2 = v2;
     }
+
+    public Item()
+    {
+    }
 }
