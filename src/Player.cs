@@ -49,26 +49,47 @@ class Player
         backpack.Put(itemName, item);
 
         // Inspect returned values.
+        Console.WriteLine("You have taken " + item.Description + " from the chest.");
         
         // If the item doesn't fit your backpack, put it back in the chest.
         // Communicate to the user what's happening.
         // Return true/false for success/failure
-        
         // Put it in your backpack.
-        // Inspect returned values.
-        // If the item doesn't fit your backpack, put it back in the chest.
-        // Communicate to the user what's happening.
-        // Return true/false for success/failure
-        return false;
+        if (item.Weight > backpack.freeweight)
+        {
+            currentRoom.chest.Put(itemName, item);
+            Console.WriteLine("You don't have enough space in your inventory.");
+            return false;
+        }
+        else
+        {
+            Console.WriteLine("You have enough space in your inventory.");
+            return true;
+        }
     }
     public bool DropToChest(string itemName)
     {
         // TODO implement:
         // Remove Item from your inventory.
+        backpack.RemoveItem(itemName);
+
         // Add the Item to the Room
+        currentRoom.chest.Put(itemName, item);
+
         // Inspect returned values
         // Communicate to the user what's happening
+        Console.WriteLine("You have dropped " + item.Description + " into the chest.");
+        
         // Return true/false for success/failure
-        return false;
+        if(item == null)
+        {
+            Console.WriteLine("You don't have this item in your inventory.");
+            return false;
+        }
+        else
+        {
+            Console.WriteLine("You have dropped " + item.Description + " into the chest.");
+            return true;
+        }
     }
 }

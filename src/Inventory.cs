@@ -5,6 +5,7 @@ class Inventory
     // fields
     private int maxWeight;
     private Dictionary<string, Item> items;
+    public int freeweight;
    
 
     // constructor
@@ -18,23 +19,21 @@ class Inventory
     public bool Put(string itemName, Item item)
     {
         // TODO implement:
-
         // Check the Weight of the Item and check
         // for enough space in the Inventory
         // Does the Item fit?
-        TotalWeight();
-        FreeWeight();
-        
-        // Put Item in the items Dictionary
-        items.Add(itemName, item);
-        
-        // Return true/false for success/failure
-        if (item.Weight <= maxWeight)
+        if (item.Weight < freeweight)
         {
+            Console.WriteLine("You have enough space in your inventory.");
+            // Put Item in the items Dictionary
+            items.Add(itemName, item);
+            // Return true for success
             return true;
         }
         else
         {
+            Console.WriteLine("You don't have enough space in your inventory.");
+            // Return false for failure
             return false;
         }
     }
@@ -66,9 +65,6 @@ class Inventory
         }
     }
 
-    
-    
-
     public int TotalWeight()
     {
         int total = 0;
@@ -84,14 +80,8 @@ class Inventory
     {
         // TODO implement:
         // compare MaxWeight and TotalWeight()
-        if (TotalWeight() <= maxWeight)
-        {
-            return maxWeight - TotalWeight();
-        }
-        else
-        {
-            return 0;
-        }
+        freeweight = maxWeight - TotalWeight();
+        return freeweight;
     }
 
     public void RemoveItem(string itemName)
@@ -100,5 +90,17 @@ class Inventory
         // remove Item from items Dictionary
         items.Remove(itemName);
     }
-    
+
+    public string Show()
+    {
+        // TODO implement:
+        // loop through the items and return a string
+        // with all the items in the Inventory
+        string inventory = "";
+        foreach (string key in items.Keys)
+        {
+            inventory += items[key].Description + ", ";
+        }
+        return inventory;
+    }
 }

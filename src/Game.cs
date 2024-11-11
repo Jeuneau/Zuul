@@ -145,6 +145,12 @@ class Game
 			case "get":
 				inventory.Get("itemID"); // Replace "itemID" with the actual item ID
 				break;
+			case "take":
+				Take(command, new Item("itemName", 1)); // Replace "itemName" with the actual item name
+				break;
+			case "drop":
+				Drop(command, new Item("itemName", 1)); // Replace "itemName" with the actual item name
+				break;
 		}
 
 		return wantToQuit;
@@ -199,7 +205,19 @@ class Game
 	private void Status(Command command)
 	{
 		Console.WriteLine("Your health is: " + player.health);
+		Console.WriteLine("Your inventory: " + inventory.Show());
 	}
 
-	
+	private void Take(Command command, Item item)
+	{
+		// TODO implement
+		player.TakeFromChest("itemName"); // Replace "itemName" with the actual item name
+		Console.WriteLine("You have picked up " + item.Description + ".");
+	}
+	private void Drop(Command command, Item item)
+	{
+		// TODO implement
+		player.DropToChest("itemName"); // Replace "itemName" with the actual item name
+		Console.WriteLine("You have dropped " + item.Description + ".");
+	}	
 }
