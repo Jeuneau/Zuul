@@ -8,7 +8,7 @@ class Player
     public bool isAlive;
     public bool hasKey { get; set; }
     private Inventory backpack;
-    private Item item;
+    
 
     // constructor
     public Player()
@@ -17,17 +17,18 @@ class Player
         health = 100;
         amount = 30;
         backpack = new Inventory(25);
-        item = new Item();
     }
 
-    public void Damage(int amount)
+    public int Damage(int amount)
     {
         health -= amount;
+        return health;
     }
    
-   public void Heal(int amount)
+   public int Heal(int amount)
    {
        health += amount;
+       return health;
    }
 
    public void IsAlive()
@@ -43,9 +44,10 @@ class Player
     {
         // TODO implement:
         // Remove the Item from the Room
-        currentRoom.chest.RemoveItem(itemName);
+        currentRoom.Chest.RemoveItem(itemName);
 
         // Put it in your backpack.
+        Item item = currentRoom.Chest.Get(itemName);
         backpack.Put(itemName, item);
 
         // Inspect returned values.
@@ -57,7 +59,7 @@ class Player
         // Put it in your backpack.
         if (item.Weight > backpack.freeweight)
         {
-            currentRoom.chest.Put(itemName, item);
+            currentRoom.Chest.Put(itemName, item);
             Console.WriteLine("You don't have enough space in your inventory.");
             return false;
         }
@@ -66,6 +68,7 @@ class Player
             Console.WriteLine("You have enough space in your inventory.");
             return true;
         }
+        
     }
     public bool DropToChest(string itemName)
     {
@@ -74,7 +77,8 @@ class Player
         backpack.RemoveItem(itemName);
 
         // Add the Item to the Room
-        currentRoom.chest.Put(itemName, item);
+        Item item = backpack.Get(itemName);
+        currentRoom.Chest.Put(itemName, item);
 
         // Inspect returned values
         // Communicate to the user what's happening

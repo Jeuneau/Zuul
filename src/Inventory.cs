@@ -84,11 +84,12 @@ class Inventory
         return freeweight;
     }
 
-    public void RemoveItem(string itemName)
+    public Item RemoveItem(string itemName)
     {
         // TODO implement:
         // remove Item from items Dictionary
         items.Remove(itemName);
+        return items[itemName];
     }
 
     public string Show()
