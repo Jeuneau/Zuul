@@ -1,5 +1,6 @@
 using System;
 using System.Runtime;
+using System.Security.Cryptography.X509Certificates;
 
 class Game
 {
@@ -20,8 +21,6 @@ class Game
 		inventory = new Inventory(100); // Assuming 100 is the max weight
 		player = new Player();
 		CreateRooms();
-		
-		
 	}
 
 	// Initialise the Rooms (and the Items)
@@ -77,25 +76,21 @@ class Game
 		Console.WriteLine("You died. Thank you for playing.");
 		Console.WriteLine("Press [Enter] to continue.");
 		Console.ReadLine();
+	
+		if (player.currentRoom.Description == "outside the main entrance of the university" && player.backpack.Get("key") != null)
+		{
+			Win();
+		}
+	}
 
 		
 	//Win scenario
-		/*if (room == "lab" && player.health > 0 && player.hasKey)
-		{
-			Console.WriteLine("Congratulations! You have found the key and successfully escaped the university!");
-			Console.WriteLine("Press [Enter] to continue.");
-			Console.ReadLine();
-			Environment.Exit(0); // End the game
-		}
-		else if (room == "lab" && player.health > 0)
-		{
-			Console.WriteLine("You have successfully escaped the university!");
-			Console.WriteLine("Press [Enter] to continue.");
-			Console.ReadLine();
-			Environment.Exit(0); // End the game
-		}*/
+	public void Win() {
+		Console.WriteLine("You have unlocked the door and escaped the university.");
+		Console.WriteLine("You have won the game.");
+		Console.WriteLine("Press [Enter] to continue.");
+		Console.ReadLine();
 		
-
 	}
 
 	// Print out the opening message for the player.

@@ -76,6 +76,7 @@ class Inventory
         }
         return total;
     }
+    
     public int FreeWeight()
     {
         // TODO implement:
