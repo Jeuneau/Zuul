@@ -64,6 +64,9 @@ class Room
 		return str;
 	}
 
-	
-
+	public void Unlock()
+    {
+        Console.WriteLine("The room has been unlocked.");
+    }
+   
 }

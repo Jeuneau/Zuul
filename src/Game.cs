@@ -151,6 +151,9 @@ class Game
 			case "drop":
 				Drop(command, new Item("itemName", 1)); // Replace "itemName" with the actual item name
 				break;
+			case "use":
+				player.Use("itemID"); // Replace "itemID" with the actual item ID
+				break;
 		}
 
 		return wantToQuit;

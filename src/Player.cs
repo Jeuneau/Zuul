@@ -96,4 +96,48 @@ class Player
             return true;
         }
     }
+
+    public string Use(string itemName)
+    {
+        // TODO implement:
+        // Check if the Item is in your Inventory
+        Item item = backpack.Get(itemName);
+        // If it is, use it
+        if (item != null)
+        {
+            // If it's a key, unlock the door
+            if (item.Description == "key")
+            {
+                currentRoom.Unlock();
+                return "You have unlocked the door.";
+            }
+            // If it's a health potion, heal yourself
+            else if (item.Description == "health potion")
+            {
+                Heal(20);
+                return "You have healed yourself.";
+            }
+            // If it's a weapon, attack the enemy
+            else if (item.Description == "weapon")
+            {
+                return "You have attacked the enemy.";
+            }
+            // If it's a flashlight, light up the room
+            else if (item.Description == "flashlight")
+            {
+                return "You have lit up the room.";
+            }
+            // If it's a map, show the map
+            else if (item.Description == "map")
+            {
+                return "You have shown the map.";
+            }
+            // If it's a compass, show the compass
+            else if (item.Description == "compass")
+            {
+                return "You have shown the compass.";
+            }
+        }
+        return "Item not found in inventory.";
+    }
 }
