@@ -209,15 +209,45 @@ class Game
 	}
 
 	private void Take(Command command, Item item)
-	{
-		// TODO implement
-		player.TakeFromChest("itemName"); // Replace "itemName" with the actual item name
-		Console.WriteLine("You have picked up " + item.Description + ".");
+	{	
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Take what?");
+			return;
+		}
+
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item chestItem = player.currentRoom.Chest.Get(itemName);
+
+		if (item != null)
+		{
+			player.TakeFromChest(itemName);
+			Console.WriteLine("You have picked up " + item.Description + ".");
+		}
+		else
+		{
+			Console.WriteLine("Item not found.");
+		}
 	}
+
 	private void Drop(Command command, Item item)
 	{
-		// TODO implement
-		player.DropToChest("itemName"); // Replace "itemName" with the actual item name
-		Console.WriteLine("You have dropped " + item.Description + ".");
-	}	
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Drop what?");
+			return;
+		}
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item backpackItem = player.backpack.Get(itemName);
+
+		if (backpackItem != null)
+		{
+			player.DropToChest(itemName);
+			Console.WriteLine("You have dropped " + backpackItem.Description + ".");
+		}
+		else
+		{
+			Console.WriteLine("Item not found in your inventory.");
+		}
+	}
 }

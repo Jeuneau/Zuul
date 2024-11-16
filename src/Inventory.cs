@@ -86,10 +86,12 @@ class Inventory
 
     public Item RemoveItem(string itemName)
     {
-        // TODO implement:
-        // remove Item from items Dictionary
+        if (items.TryGetValue(itemName, out Item item))
+        {
         items.Remove(itemName);
-        return items[itemName];
+        return item;
+        }
+        return null; // or throw an exception if the item is not found   
     }
 
     public string Show()
