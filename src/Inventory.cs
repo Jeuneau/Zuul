@@ -5,7 +5,7 @@ class Inventory
     // fields
     private int maxWeight;
     private Dictionary<string, Item> items;
-    public int freeweight;
+    private int freeweight;
    
 
     // constructor
@@ -21,6 +21,9 @@ class Inventory
         // TODO implement:
         // Check the Weight of the Item and check
         // for enough space in the Inventory
+        
+
+
         // Does the Item fit?
         if (item.Weight < freeweight)
         {

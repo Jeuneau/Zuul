@@ -90,7 +90,6 @@ class Game
 		Console.WriteLine("You have won the game.");
 		Console.WriteLine("Press [Enter] to continue.");
 		Console.ReadLine();
-		
 	}
 
 	// Print out the opening message for the player.
