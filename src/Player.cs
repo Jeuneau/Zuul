@@ -104,30 +104,10 @@ class Player
                 return "You have unlocked the door.";
             }
             // If it's a health potion, heal yourself
-            else if (item.Description == "health potion")
+            else if (item.Description == "potion")
             {
                 Heal(20);
                 return "You have healed yourself.";
-            }
-            // If it's a weapon, attack the enemy
-            else if (item.Description == "weapon")
-            {
-                return "You have attacked the enemy.";
-            }
-            // If it's a flashlight, light up the room
-            else if (item.Description == "flashlight")
-            {
-                return "You have lit up the room.";
-            }
-            // If it's a map, show the map
-            else if (item.Description == "map")
-            {
-                return "You have shown the map.";
-            }
-            // If it's a compass, show the compass
-            else if (item.Description == "compass")
-            {
-                return "You have shown the compass.";
             }
         }
         return "Item not found in inventory.";

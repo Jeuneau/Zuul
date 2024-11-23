@@ -134,19 +134,22 @@ class Game
 				Status(command);
 				break;
 			case "put":
-				inventory.Put("itemID", new Item("itemName", 1)); // Replace "itemID" with the actual item ID
+				Put(command); 
 				break;
 			case "get":
-				inventory.Get("itemID"); // Replace "itemID" with the actual item ID
+				Get(command); 
 				break;
 			case "take":
-				Take(command, new Item("itemName", 1)); // Replace "itemName" with the actual item name
+				Take(command); 
 				break;
 			case "drop":
-				Drop(command, new Item("itemName", 1)); // Replace "itemName" with the actual item name
+				Drop(command); 
 				break;
 			case "use":
-				player.Use("itemID"); // Replace "itemID" with the actual item ID
+				Use(command); 
+				break;
+			case "attack":
+				Attack(command);
 				break;
 		}
 
@@ -205,7 +208,51 @@ class Game
 		Console.WriteLine("Your inventory: " + inventory.Show());
 	}
 
-	private void Take(Command command, Item item)
+	private void Put(Command command)
+	{
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Put what?");
+			return;
+		}
+
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item backpackItem = player.backpack.Get(itemName);
+
+		if (backpackItem != null)
+		{
+			inventory.Put(itemName, backpackItem);
+			Console.WriteLine("You have put " + backpackItem.Description + " in the chest.");
+		}
+		else
+		{
+			Console.WriteLine("Item not found in your inventory.");
+		}
+	}
+
+	private void Get(Command command)
+	{
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Get what?");
+			return;
+		}
+
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item chestItem = player.currentRoom.Chest.Get(itemName);
+
+		if (chestItem != null)
+		{
+			inventory.Get(itemName);
+			Console.WriteLine("You have fetched " + chestItem.Description + " from the chest.");
+		}
+		else
+		{
+			Console.WriteLine("Item not found in the chest.");
+		}
+	}
+
+	private void Take(Command command)
 	{	
 		if (command.SecondWord == null)
 		{
@@ -214,20 +261,10 @@ class Game
 		}
 
 		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
-		Item chestItem = player.currentRoom.Chest.Get(itemName);
-
-		if (item != null)
-		{
-			player.TakeFromChest(itemName);
-			Console.WriteLine("You have picked up " + item.Description + ".");
-		}
-		else
-		{
-			Console.WriteLine("Item not found.");
-		}
+		player.TakeFromChest(itemName);
 	}
 
-	private void Drop(Command command, Item item)
+	private void Drop(Command command)
 	{
 		if (command.SecondWord == null)
 		{
@@ -235,16 +272,43 @@ class Game
 			return;
 		}
 		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
-		Item backpackItem = player.backpack.Get(itemName);
+		player.DropToChest(itemName);
+	}
 
-		if (backpackItem != null)
+	private void Use(Command command)
+	{
+		if (command.SecondWord == null)
 		{
-			player.DropToChest(itemName);
-			Console.WriteLine("You have dropped " + backpackItem.Description + ".");
+			Console.WriteLine("Use what?");
+			return;
 		}
-		else
+		
+		string itemName = command.SecondWord;
+		if (command.SecondWord == itemName)
 		{
-			Console.WriteLine("Item not found in your inventory.");
+			player.Use(itemName);
+		}
+	}
+
+		
+
+	private void Attack(Command command)
+	{
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Attack what?");
+		}
+		if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
+		{
+			Console.WriteLine("You have sliced the dragon in half.");
+		}
+		else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
+		{
+			Console.WriteLine("You have punctured the dragon's scales.");
+		}
+		else if(command.SecondWord == "dragon" && command.ThirdWord == "grenade")
+		{
+			Console.WriteLine("You have blown the dragon to pieces.");
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System.Dynamic;
 using System.IO.Compression;
 
 class Inventory
@@ -6,41 +7,34 @@ class Inventory
     private int maxWeight;
     private Dictionary<string, Item> items;
     private int freeweight;
+  
+
+   
    
 
     // constructor
     public Inventory(int maxWeight)
     {
-    this.maxWeight = maxWeight;
-    this.items = new Dictionary<string, Item>();
+        this.maxWeight = maxWeight;
+        this.items = new Dictionary<string, Item>(); 
     }
 
     // methods
+    
     public bool Put(string itemName, Item item)
     {
         // TODO implement:
-        // Check the Weight of the Item and check
-        // for enough space in the Inventory
-        
-
-
-        // Does the Item fit?
-        if (item.Weight < freeweight)
-        {
-            Console.WriteLine("You have enough space in your inventory.");
-            // Put Item in the items Dictionary
-            items.Add(itemName, item);
-            // Return true for success
-            return true;
-        }
-        else
+        // Check if the item fits in the inventory
+        if (item.Weight > FreeWeight())
         {
             Console.WriteLine("You don't have enough space in your inventory.");
-            // Return false for failure
             return false;
         }
+        // Add Item to items Dictionary
+        items.Add(itemName, item);
+        return true;
     }
-    
+
     public Item Get(string itemName)
     {
         // TODO implement:
@@ -50,7 +44,6 @@ class Inventory
             if (key == itemName)
             {
                 Item item = items[key];
-                Console.WriteLine("You fetched " + item.Description + " out of your inventory.");
                 return items[key];
             }
         }
@@ -64,7 +57,6 @@ class Inventory
         else
         {
             return null;
-        
         }
     }
 
@@ -83,6 +75,7 @@ class Inventory
     public int FreeWeight()
     {
         // TODO implement:
+
         // compare MaxWeight and TotalWeight()
         freeweight = maxWeight - TotalWeight();
         return freeweight;
@@ -92,8 +85,8 @@ class Inventory
     {
         if (items.TryGetValue(itemName, out Item item))
         {
-        items.Remove(itemName);
-        return item;
+            items.Remove(itemName);
+            return item;
         }
         return null; // or throw an exception if the item is not found   
     }
