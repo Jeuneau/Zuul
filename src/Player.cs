@@ -8,6 +8,7 @@ class Player
     public bool isAlive;
     public bool hasKey { get; set; }
     public Inventory backpack;
+    private Item item;
     
 
     // constructor
@@ -86,30 +87,5 @@ class Player
         // Communicate to the user what's happening
         Console.WriteLine("You have dropped " + item.Description + " into the chest.");
         return true;
-}
-
-    public string Use(string itemName)
-    {
-        // TODO implement:
-        // Check if the Item is in your Inventory
-        Item item = backpack.Get(itemName);
-        
-        // If it is, use it
-        if (item != null)
-        {
-            // If it's a key, unlock the door
-            if (item.Description == "key")
-            {
-                currentRoom.Unlock();
-                return "You have unlocked the door.";
-            }
-            // If it's a health potion, heal yourself
-            else if (item.Description == "potion")
-            {
-                Heal(20);
-                return "You have healed yourself.";
-            }
-        }
-        return "Item not found in inventory.";
     }
 }

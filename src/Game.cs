@@ -280,13 +280,15 @@ class Game
 		if (command.SecondWord == null)
 		{
 			Console.WriteLine("Use what?");
-			return;
 		}
-		
-		string itemName = command.SecondWord;
-		if (command.SecondWord == itemName)
+		else if (command.SecondWord == "key" && command.ThirdWord == "west")
 		{
-			player.Use(itemName);
+			Console.WriteLine("You have unlocked the gate and escaped the university. Congratulations!");
+		}
+		if(command.SecondWord == "potion")
+		{
+			player.Heal(20); 
+			Console.WriteLine("You have healed yourself.");
 		}
 	}
 
