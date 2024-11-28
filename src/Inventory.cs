@@ -39,25 +39,15 @@ class Inventory
     {
         // TODO implement:
         // Find Item in items Dictionary
-        foreach (string key in items.Keys)
-        {
-            if (key == itemName)
-            {
-                Item item = items[key];
-                return items[key];
-            }
-        }
-        // remove Item from items Dictionary if found
-        items.Remove(itemName);
-        // return Item or null
+         // remove Item from items Dictionary if found
+          // return Item or null
         if (items.ContainsKey(itemName))
         {
-            return items[itemName];
+            Item item = items[itemName];
+            items.Remove(itemName);
+            return item;
         }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     public int TotalWeight()

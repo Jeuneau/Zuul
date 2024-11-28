@@ -18,11 +18,6 @@ class Room
 		description = desc;
 		exits = new Dictionary<string, Room>();
 		chest = new Inventory(99999);
-		chest.Put("key", new Item(1, "a key"));
-		chest.Put("sword", new Item(5, "a sword"));
-		chest.Put("shotgun", new Item(10, "a shotgun"));
-		chest.Put("grenade", new Item(3, "a grenade"));
-		chest.Put("potion", new Item(2, "a potion"));
 	}
 
 	// Define an exit for this room.

@@ -8,7 +8,7 @@ class Player
     public bool isAlive;
     public bool hasKey { get; set; }
     public Inventory backpack;
-    private Item item;
+    
     
 
     // constructor

@@ -7,19 +7,26 @@ class Game
 	// Private fields
 	private Parser parser;
 	private Player player;
-	private Inventory inventory;
-	
+	private Item key;
+	private Item potion;
+	private Item sword;
+	private Item shotgun;
+	private Item grenade;
+    private Enemy enemy;
 
 
-	// Private fields
-	
 
-	// Constructor
-	public Game()
+
+
+    // Private fields
+
+
+    // Constructor
+    public Game()
 	{
 		parser = new Parser();
-		inventory = new Inventory(100); // Assuming 100 is the max weight
 		player = new Player();
+		enemy = new Enemy();
 		CreateRooms();
 	}
 
@@ -27,11 +34,11 @@ class Game
 	private void CreateRooms()
 	{
 		
-		Room outside = new Room("outside the main entrance of the university");
-		Room theatre = new Room("in a lecture theatre");
-		Room pub = new Room("in the campus pub");
-		Room lab = new Room("in a computing lab");
-		Room office = new Room("in the computing admin office");
+		Room outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. Tread carefully");
+		Room theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
+		Room pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
+		Room lab = new Room("in a computing lab. You see a potion on the desk");
+		Room office = new Room("in the computing admin office. You find a key and a grenade in the drawers of the desk");
 		
 
 		// Initialise room exits
@@ -52,9 +59,18 @@ class Game
 		office.AddExit("up", pub);
 
 		// Create your Items here
-		// ...
+		key = new Item(1, "a key");
+		potion = new Item(2, "a potion");
+		sword = new Item(5, "a sword");
+		shotgun = new Item(10, "a shotgun");
+		grenade = new Item(3, "a grenade");
+		
 		// And add them to the Rooms
-		// ...
+		office.Chest.Put("key", key);
+		lab.Chest.Put("potion", potion);
+		pub.Chest.Put("sword", sword);
+		theatre.Chest.Put("shotgun", shotgun);
+		office.Chest.Put("grenade", grenade);
 
 		// Start game outside
 		player.currentRoom = outside;
@@ -74,20 +90,6 @@ class Game
 			finished = ProcessCommand(command);
 		}
 		Console.WriteLine("You died. Thank you for playing.");
-		Console.WriteLine("Press [Enter] to continue.");
-		Console.ReadLine();
-	
-		if (player.currentRoom.Description == "outside the main entrance of the university" && player.backpack.Get("key") != null)
-		{
-			Win();
-		}
-	}
-
-		
-	//Win scenario
-	public void Win() {
-		Console.WriteLine("You have unlocked the door and escaped the university.");
-		Console.WriteLine("You have won the game.");
 		Console.WriteLine("Press [Enter] to continue.");
 		Console.ReadLine();
 	}
@@ -205,7 +207,7 @@ class Game
 	private void Status(Command command)
 	{
 		Console.WriteLine("Your health is: " + player.health);
-		Console.WriteLine("Your inventory: " + inventory.Show());
+		Console.WriteLine("Your inventory: " + player.backpack.Show());
 	}
 
 	private void Put(Command command)
@@ -221,7 +223,7 @@ class Game
 
 		if (backpackItem != null)
 		{
-			inventory.Put(itemName, backpackItem);
+			player.backpack.Put(itemName, backpackItem);
 			Console.WriteLine("You have put " + backpackItem.Description + " in the chest.");
 		}
 		else
@@ -243,7 +245,7 @@ class Game
 
 		if (chestItem != null)
 		{
-			inventory.Get(itemName);
+			player.backpack.Get(itemName);
 			Console.WriteLine("You have fetched " + chestItem.Description + " from the chest.");
 		}
 		else
@@ -300,17 +302,21 @@ class Game
 		{
 			Console.WriteLine("Attack what?");
 		}
-		if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
+		if(enemy.name == "dragon")
 		{
-			Console.WriteLine("You have sliced the dragon in half.");
-		}
-		else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
-		{
-			Console.WriteLine("You have punctured the dragon's scales.");
-		}
-		else if(command.SecondWord == "dragon" && command.ThirdWord == "grenade")
-		{
-			Console.WriteLine("You have blown the dragon to pieces.");
+			if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
+			{
+				Console.WriteLine("You have sliced the dragon in half.");
+			}
+			else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
+			{
+				Console.WriteLine("You have punctured the dragon's scales.");
+			}
+			else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
+			{
+				Console.WriteLine("You have blown the dragon to pieces.");
+			}
 		}
 	}
 }
+
