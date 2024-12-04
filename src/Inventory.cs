@@ -6,7 +6,7 @@ class Inventory
     // fields
     private int maxWeight;
     private Dictionary<string, Item> items;
-    private int freeweight;
+    
   
 
    
@@ -67,7 +67,7 @@ class Inventory
         // TODO implement:
 
         // compare MaxWeight and TotalWeight()
-        freeweight = maxWeight - TotalWeight();
+        int freeweight = maxWeight - TotalWeight();
         return freeweight;
     }
 

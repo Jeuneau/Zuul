@@ -12,7 +12,8 @@ class Game
 	private Item sword;
 	private Item shotgun;
 	private Item grenade;
-    private Enemy enemy;
+	private Enemy enemy;
+    
 
 
 
@@ -29,6 +30,9 @@ class Game
 		enemy = new Enemy();
 		CreateRooms();
 	}
+
+	
+	
 
 	// Initialise the Rooms (and the Items)
 	private void CreateRooms()
@@ -157,6 +161,10 @@ class Game
 
 		return wantToQuit;
 	}
+
+	
+
+	
 
 	// ######################################
 	// implementations of user commands:
@@ -302,7 +310,7 @@ class Game
 		{
 			Console.WriteLine("Attack what?");
 		}
-		if(enemy.name == "dragon")
+		if(enemy.EnemyName == "dragon")
 		{
 			if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
 			{
