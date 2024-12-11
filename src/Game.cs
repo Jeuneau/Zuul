@@ -1,5 +1,6 @@
 using System;
 using System.Runtime;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 class Game
@@ -7,12 +8,7 @@ class Game
 	// Private fields
 	private Parser parser;
 	private Player player;
-	private Item key;
-	private Item potion;
-	private Item sword;
-	private Item shotgun;
-	private Item grenade;
-	private Enemy enemy;
+	
     
 
 
@@ -27,8 +23,8 @@ class Game
 	{
 		parser = new Parser();
 		player = new Player();
-		enemy = new Enemy();
 		CreateRooms();
+		
 	}
 
 	
@@ -62,23 +58,19 @@ class Game
 		office.AddExit("west", lab);
 		office.AddExit("up", pub);
 
-		// Create your Items here
-		key = new Item(1, "a key");
-		potion = new Item(2, "a potion");
-		sword = new Item(5, "a sword");
-		shotgun = new Item(10, "a shotgun");
-		grenade = new Item(3, "a grenade");
+		// Create and assign items and weapons to rooms
+		theatre.Chest.Put("shotgun", new Item(10, "a shotgun"));
+		pub.Chest.Put("sword", new Item(10, "a Zweihander"));
+		lab.Chest.Put("potion", new Item(5, "a potion"));
+		office.Chest.Put("key", new Item(1, "a key"));
+		office.Chest.Put("grenade", new Item(5, "a grenade"));
 		
-		// And add them to the Rooms
-		office.Chest.Put("key", key);
-		lab.Chest.Put("potion", potion);
-		pub.Chest.Put("sword", sword);
-		theatre.Chest.Put("shotgun", shotgun);
-		office.Chest.Put("grenade", grenade);
 
 		// Start game outside
 		player.currentRoom = outside;
 	}
+
+	
 
 	//  Main play routine. Loops until end of play.
 	public void Play()
@@ -310,21 +302,19 @@ class Game
 		{
 			Console.WriteLine("Attack what?");
 		}
-		if(enemy.EnemyName == "dragon")
+		if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
 		{
-			if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
-			{
-				Console.WriteLine("You have sliced the dragon in half.");
-			}
-			else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
-			{
-				Console.WriteLine("You have punctured the dragon's scales.");
-			}
-			else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
-			{
-				Console.WriteLine("You have blown the dragon to pieces.");
-			}
+			Console.WriteLine("You have sliced the dragon in half.");
+		}
+		else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
+		{
+			Console.WriteLine("You have punctured the dragon's scales.");
+		}
+		else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
+		{
+			Console.WriteLine("You have blown the dragon to pieces.");
 		}
 	}
 }
+
 

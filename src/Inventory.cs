@@ -6,7 +6,8 @@ class Inventory
     // fields
     private int maxWeight;
     private Dictionary<string, Item> items;
-    
+  
+	
   
 
    
@@ -19,7 +20,13 @@ class Inventory
         this.items = new Dictionary<string, Item>(); 
     }
 
+    
+
+
+   
     // methods
+
+        
     
     public bool Put(string itemName, Item item)
     {

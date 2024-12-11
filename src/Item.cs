@@ -13,8 +13,5 @@ class Item
     }
 
    
-    public Item()
-    {
-        
-    }
+  
 }
