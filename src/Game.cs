@@ -5,7 +5,6 @@ using System.Security.Cryptography.X509Certificates;
 
 class Game
 {
-	// Private fields
 	private Parser parser;
 	private Player player;
 	
@@ -314,6 +313,7 @@ class Game
 		{
 			Console.WriteLine("You have blown the dragon to pieces.");
 		}
+		
 	}
 }
 
