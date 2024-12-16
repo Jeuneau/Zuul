@@ -5,8 +5,6 @@ class Player
     public Room currentRoom;
     public int health { get; set; }
     public int amount { get; set; }
-    public bool isAlive;
-    public bool hasKey { get; set; }
     public Inventory backpack;
     
     
@@ -19,26 +17,11 @@ class Player
         amount = 30;
         backpack = new Inventory(16);
     }
-
-    public int Damage(int amount)
-    {
-        health -= amount;
-        return health;
-    }
    
    public int Heal(int amount)
    {
        health += amount;
        return health;
-   }
-
-   public void IsAlive()
-   {
-       if (health <= 0)
-       {
-            isAlive = false;
-            Console.WriteLine("You have died.");
-       }
    }
 
     public bool TakeFromChest(string itemName)
@@ -68,6 +51,7 @@ class Player
         Console.WriteLine("You have taken " + item.Description + " from the chest.");
         return true;
     }
+
     public bool DropToChest(string itemName)
     {
         // Check if the item exists in the backpack

@@ -46,8 +46,8 @@ class Inventory
     {
         // TODO implement:
         // Find Item in items Dictionary
-         // remove Item from items Dictionary if found
-          // return Item or null
+        // remove Item from items Dictionary if found
+        // return Item or null
         if (items.ContainsKey(itemName))
         {
             Item item = items[itemName];
