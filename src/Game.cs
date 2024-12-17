@@ -7,8 +7,10 @@ class Game
 {
 	private Parser parser;
 	private Player player;
-	
-    
+    private Room outside;
+
+
+
 
 
 
@@ -32,8 +34,7 @@ class Game
 	// Initialise the Rooms (and the Items)
 	private void CreateRooms()
 	{
-		
-		Room outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. Tread carefully");
+		outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. Tread carefully");
 		Room theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
 		Room pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
 		Room lab = new Room("in a computing lab. You see a potion on the desk");
@@ -295,23 +296,30 @@ class Game
 
 		
 
-	private void Attack(Command command)
+	private void Attack(Command command) // to do: program to attack only outside
 	{
 		if (command.SecondWord == null)
 		{
 			Console.WriteLine("Attack what?");
 		}
-		if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
+		else if (player.currentRoom == outside)
 		{
-			Console.WriteLine("You have sliced the dragon in half.");
+			if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
+			{
+				Console.WriteLine("You have sliced the dragon in half.");
+			}
+			else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
+			{
+				Console.WriteLine("You have punctured the dragon's scales.");
+			}
+			else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
+			{
+				Console.WriteLine("You have blown the dragon to pieces.");
+			}
 		}
-		else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
+		else
 		{
-			Console.WriteLine("You have punctured the dragon's scales.");
-		}
-		else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
-		{
-			Console.WriteLine("You have blown the dragon to pieces.");
+			Console.WriteLine("There is nothing to attack here.");
 		}
 		
 	}
