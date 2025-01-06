@@ -57,6 +57,8 @@ class Inventory
         return null;
     }
 
+    	
+
     public int TotalWeight()
     {
         int total = 0;
@@ -99,5 +101,12 @@ class Inventory
             inventory += items[key].Description + ", ";
         }
         return inventory;
+    }
+
+    public bool HasItem(string itemName)
+    {
+        // TODO implement:
+        // Check if the item exists in the inventory
+        return items.ContainsKey(itemName);
     }
 }

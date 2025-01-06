@@ -1,27 +1,27 @@
 class Player
 {
     // auto property
-    public Room CurrentRoom { get; set; }
     public Room currentRoom;
-    public int health { get; set; }
-    public int amount { get; set; }
-    public Inventory backpack;
-    
-    
+    public int Health { get; set; }
+    public int Amount { get; set; }
+    public Inventory Backpack  { get; set; }
+    public bool HasKey { get; internal set; }
+
+
+
 
     // constructor
     public Player()
     {
-        CurrentRoom = null;
-        health = 100;
-        amount = 30;
-        backpack = new Inventory(16);
+        Health = 100;
+        Amount = 30;
+        Backpack = new Inventory(16);
     }
    
    public int Heal(int amount)
    {
-       health += amount;
-       return health;
+       Health += amount;
+       return Health;
    }
 
     public bool TakeFromChest(string itemName)
@@ -35,7 +35,7 @@ class Player
         }
 
         // Check if the item fits in the backpack
-        if (item.Weight > backpack.FreeWeight())
+        if (item.Weight > Backpack.FreeWeight())
         {
             Console.WriteLine("You don't have enough space in your inventory.");
             return false;
@@ -45,7 +45,7 @@ class Player
         currentRoom.Chest.RemoveItem(itemName);
 
         // Put it in your backpack
-        backpack.Put(itemName, item);
+        Backpack.Put(itemName, item);
 
         // Communicate to the user what's happening
         Console.WriteLine("You have taken " + item.Description + " from the chest.");
@@ -55,7 +55,7 @@ class Player
     public bool DropToChest(string itemName)
     {
         // Check if the item exists in the backpack
-        Item item = backpack.Get(itemName);
+        Item item = Backpack.Get(itemName);
         if (item == null)
         {
             Console.WriteLine("You don't have this item in your inventory.");
@@ -63,7 +63,7 @@ class Player
         }
 
         // Remove the item from the backpack
-        backpack.RemoveItem(itemName);
+        Backpack.RemoveItem(itemName);
 
         // Add the item to the chest
         currentRoom.Chest.Put(itemName, item);
@@ -72,4 +72,48 @@ class Player
         Console.WriteLine("You have dropped " + item.Description + " into the chest.");
         return true;
     }
+
+    public void Put(Command command)
+	    {
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Put what?");
+			return;
+		}
+
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item backpackItem = Backpack.Get(itemName);
+
+		if (backpackItem != null)
+		{
+			Backpack.Put(itemName, backpackItem);
+			Console.WriteLine("You have put " + backpackItem.Description + " in the chest.");
+		}
+		else
+		{
+			Console.WriteLine("Item not found in your inventory.");
+		}
+	}
+
+	public void Get(Command command)
+	{
+		if (command.SecondWord == null)
+		{
+			Console.WriteLine("Get what?");
+			return;
+		}
+
+		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
+		Item chestItem = currentRoom.Chest.Get(itemName);
+
+		if (chestItem != null)
+		{
+			Backpack.Get(itemName);
+			Console.WriteLine("You have fetched " + chestItem.Description + " from the chest.");
+		}
+		else
+		{
+			Console.WriteLine("Item not found in the chest.");
+		}
+	}
 }

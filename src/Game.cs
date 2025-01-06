@@ -5,9 +5,16 @@ using System.Security.Cryptography.X509Certificates;
 
 class Game
 {
+	// Private fields
 	private Parser parser;
 	private Player player;
     private Room outside;
+	private Room theatre;
+	private Room pub;
+	private Room lab;
+	private Room office;
+	private bool finished;
+	
 
 
 
@@ -16,7 +23,7 @@ class Game
 
 
 
-    // Private fields
+   
 
 
     // Constructor
@@ -35,10 +42,10 @@ class Game
 	private void CreateRooms()
 	{
 		outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. Tread carefully");
-		Room theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
-		Room pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
-		Room lab = new Room("in a computing lab. You see a potion on the desk");
-		Room office = new Room("in the computing admin office. You find a key and a grenade in the drawers of the desk");
+		theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
+		pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
+		lab = new Room("in a computing lab. You see a potion on the desk");
+		office = new Room("in the computing admin office. You find a key and a grenade in the drawers of the desk");
 		
 
 		// Initialise room exits
@@ -79,8 +86,9 @@ class Game
 
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the player wants to quit.
-		bool finished = false;
-		while (!finished && player.health > 0)
+		// Game over
+		finished = false;
+		while (!finished && player.Health > 0 && player.HasKey == false)
 		{
 			Command command = parser.GetCommand();
 			finished = ProcessCommand(command);
@@ -132,10 +140,10 @@ class Game
 				Status(command);
 				break;
 			case "put":
-				Put(command); 
+				player.Put(command); 
 				break;
 			case "get":
-				Get(command); 
+				player.Get(command); 
 				break;
 			case "take":
 				Take(command); 
@@ -196,7 +204,7 @@ class Game
 
 		player.currentRoom = nextRoom;
 		Console.WriteLine(player.currentRoom.GetLongDescription());
-		player.health -= 10;
+		player.Health -= 10;
 	}
 
 	private void Look(Command command)
@@ -206,53 +214,11 @@ class Game
 
 	private void Status(Command command)
 	{
-		Console.WriteLine("Your health is: " + player.health);
-		Console.WriteLine("Your inventory: " + player.backpack.Show());
+		Console.WriteLine("Your health is: " + player.Health);
+		Console.WriteLine("Your inventory: " + player.Backpack.Show());
 	}
 
-	private void Put(Command command)
-	{
-		if (command.SecondWord == null)
-		{
-			Console.WriteLine("Put what?");
-			return;
-		}
 
-		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
-		Item backpackItem = player.backpack.Get(itemName);
-
-		if (backpackItem != null)
-		{
-			player.backpack.Put(itemName, backpackItem);
-			Console.WriteLine("You have put " + backpackItem.Description + " in the chest.");
-		}
-		else
-		{
-			Console.WriteLine("Item not found in your inventory.");
-		}
-	}
-
-	private void Get(Command command)
-	{
-		if (command.SecondWord == null)
-		{
-			Console.WriteLine("Get what?");
-			return;
-		}
-
-		string itemName = command.SecondWord; // Assuming the item name is the second word in the command
-		Item chestItem = player.currentRoom.Chest.Get(itemName);
-
-		if (chestItem != null)
-		{
-			player.backpack.Get(itemName);
-			Console.WriteLine("You have fetched " + chestItem.Description + " from the chest.");
-		}
-		else
-		{
-			Console.WriteLine("Item not found in the chest.");
-		}
-	}
 
 	private void Take(Command command)
 	{	
@@ -277,26 +243,33 @@ class Game
 		player.DropToChest(itemName);
 	}
 
-	private void Use(Command command)
+	private void Use(Command command) // to do: implement that the player cannot enter input if the key is used to open the gate
 	{
 		if (command.SecondWord == null)
 		{
 			Console.WriteLine("Use what?");
 		}
-		else if (command.SecondWord == "key" && command.ThirdWord == "west")
+		else if (command.SecondWord == "key" && command.ThirdWord == "west" && player.currentRoom == outside && player.Backpack.HasItem("key"))
 		{
+			finished = true;
 			Console.WriteLine("You have unlocked the gate and escaped the university. Congratulations!");
+			Console.WriteLine("Press [Enter] to continue.");
+			Console.ReadLine();
 		}
-		if(command.SecondWord == "potion")
+		if(command.SecondWord == "potion" && player.Backpack.HasItem("potion"))
 		{
 			player.Heal(20); 
 			Console.WriteLine("You have healed yourself.");
+		}
+		else
+		{
+			Console.WriteLine("You don't have or can't use that item.");
 		}
 	}
 
 		
 
-	private void Attack(Command command) // to do: program to attack only outside
+	private void Attack(Command command) 
 	{
 		if (command.SecondWord == null)
 		{
@@ -321,7 +294,6 @@ class Game
 		{
 			Console.WriteLine("There is nothing to attack here.");
 		}
-		
 	}
 }
 
