@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
@@ -13,6 +14,7 @@ class Game
 	private Room pub;
 	private Room lab;
 	private Room office;
+	private Room basement;
 	private bool finished;
 	
 
@@ -45,8 +47,8 @@ class Game
 		theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
 		pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
 		lab = new Room("in a computing lab. You see a potion on the desk");
-		office = new Room("in the computing admin office. You find a key and a grenade in the drawers of the desk");
-		
+		office = new Room("in the computing admin office. You find a grenade in the drawer of the desk");
+		basement = new Room("in the basement of the university. You see a key on the floor and a staircase leading up to the theatre");
 
 		// Initialise room exits
 		outside.AddExit("east", theatre);
@@ -54,6 +56,7 @@ class Game
 		outside.AddExit("west", pub);
 
 		theatre.AddExit("west", outside);
+		theatre.AddExit("down", basement);
 
 		pub.AddExit("east", outside);
 		
@@ -65,12 +68,14 @@ class Game
 		office.AddExit("west", lab);
 		office.AddExit("up", pub);
 
+		basement.AddExit("up", theatre);
+
 		// Create and assign items and weapons to rooms
 		theatre.Chest.Put("shotgun", new Item(10, "a shotgun"));
 		pub.Chest.Put("sword", new Item(10, "a Zweihander"));
 		lab.Chest.Put("potion", new Item(5, "a potion"));
-		office.Chest.Put("key", new Item(1, "a key"));
 		office.Chest.Put("grenade", new Item(5, "a grenade"));
+		basement.Chest.Put("key", new Item(1, "a key"));
 		
 
 		// Start game outside
@@ -107,6 +112,13 @@ class Game
 		Console.WriteLine("Type 'help' if you need help.");
 		Console.WriteLine();
 		Console.WriteLine(player.currentRoom.GetLongDescription());
+	}
+
+	private void Win ()
+	{
+		Console.WriteLine("You have escaped the university. Congratulations!");
+		Console.WriteLine("Press [Enter] to continue.");
+		Console.ReadLine();
 	}
 
 	// Given a command, process (that is: execute) the command.
@@ -198,7 +210,7 @@ class Game
 		Room nextRoom = player.currentRoom.GetExit(direction);
 		if (nextRoom == null)
 		{
-			Console.WriteLine("There is no door to "+direction+"!");
+			Console.WriteLine("There is no door to "+ direction +"!");
 			return;
 		}
 
@@ -251,13 +263,13 @@ class Game
 		}
 		else if (command.SecondWord == "key" && command.ThirdWord == "west" && player.currentRoom == outside && player.Backpack.HasItem("key"))
 		{
+			player.Backpack.RemoveItem("key");
 			finished = true;
-			Console.WriteLine("You have unlocked the gate and escaped the university. Congratulations!");
-			Console.WriteLine("Press [Enter] to continue.");
-			Console.ReadLine();
+			Win();
 		}
 		if(command.SecondWord == "potion" && player.Backpack.HasItem("potion"))
 		{
+			player.Backpack.RemoveItem("potion");
 			player.Heal(20); 
 			Console.WriteLine("You have healed yourself.");
 		}

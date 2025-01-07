@@ -74,7 +74,7 @@ class Player
     }
 
     public void Put(Command command)
-	    {
+	{
 		if (command.SecondWord == null)
 		{
 			Console.WriteLine("Put what?");
