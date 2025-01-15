@@ -16,6 +16,7 @@ class Game
 	private Room office;
 	private Room basement;
 	private bool finished;
+	private Enemy dragon;
 	
 
 
@@ -33,6 +34,7 @@ class Game
 	{
 		parser = new Parser();
 		player = new Player();
+		dragon = new Enemy();
 		CreateRooms();
 		
 	}
@@ -43,12 +45,12 @@ class Game
 	// Initialise the Rooms (and the Items)
 	private void CreateRooms()
 	{
-		outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. Tread carefully");
-		theatre = new Room("in a lecture theatre. You see a shotgun laying on the floor");
+		outside = new Room("outside the main entrance of the university. A dragon is burning the campus down. You take fire damage every time you are here");
 		pub = new Room("in the campus pub. You see a sword on the wall, a Zweihander to be exact");
 		lab = new Room("in a computing lab. You see a potion on the desk");
 		office = new Room("in the computing admin office. You find a grenade in the drawer of the desk");
 		basement = new Room("in the basement of the university. You see a key on the floor and a staircase leading up to the theatre");
+		theatre = new Room("in the university theatre. You see a shotgun on the stage");
 
 		// Initialise room exits
 		outside.AddExit("east", theatre);
@@ -91,6 +93,7 @@ class Game
 
 		// Enter the main command loop. Here we repeatedly read commands and
 		// execute them until the player wants to quit.
+
 		// Game over
 		finished = false;
 		while (!finished && player.Health > 0 && player.HasKey == false)
@@ -114,12 +117,6 @@ class Game
 		Console.WriteLine(player.currentRoom.GetLongDescription());
 	}
 
-	private void Win ()
-	{
-		Console.WriteLine("You have escaped the university. Congratulations!");
-		Console.WriteLine("Press [Enter] to continue.");
-		Console.ReadLine();
-	}
 
 	// Given a command, process (that is: execute) the command.
 	// If this command ends the game, it returns true.
@@ -216,6 +213,10 @@ class Game
 
 		player.currentRoom = nextRoom;
 		Console.WriteLine(player.currentRoom.GetLongDescription());
+		if (player.currentRoom == outside)
+		{
+			player.Health -= 20;
+		}
 		player.Health -= 10;
 	}
 
@@ -255,7 +256,7 @@ class Game
 		player.DropToChest(itemName);
 	}
 
-	private void Use(Command command) // to do: implement that the player cannot enter input if the key is used to open the gate
+	private void Use(Command command) 
 	{
 		if (command.SecondWord == null)
 		{
@@ -263,14 +264,15 @@ class Game
 		}
 		else if (command.SecondWord == "key" && command.ThirdWord == "west" && player.currentRoom == outside && player.Backpack.HasItem("key"))
 		{
-			player.Backpack.RemoveItem("key");
 			finished = true;
-			Win();
+			player.HasKey = true;
+			player.Backpack.RemoveItem("key");
+			Console.WriteLine("Congratulations! You have escaped the university.");
 		}
 		if(command.SecondWord == "potion" && player.Backpack.HasItem("potion"))
 		{
 			player.Backpack.RemoveItem("potion");
-			player.Heal(20); 
+			player.Heal(40); 
 			Console.WriteLine("You have healed yourself.");
 		}
 		else
@@ -291,15 +293,21 @@ class Game
 		{
 			if (command.SecondWord == "dragon" && command.ThirdWord == "sword")
 			{
-				Console.WriteLine("You have sliced the dragon in half.");
+				dragon.TakeDamage(15);
+				dragon.IsDead();
+				Console.WriteLine("You slash at the dragon. He takes 15 damage.");
 			}
 			else if (command.SecondWord == "dragon" && command.ThirdWord == "shotgun")
 			{
-				Console.WriteLine("You have punctured the dragon's scales.");
+				dragon.TakeDamage(10);
+				dragon.IsDead();
+				Console.WriteLine("You have punctured the dragon's scales. He takes 10 damage.");
 			}
 			else if (command.SecondWord == "dragon" && command.ThirdWord == "grenade")
 			{
-				Console.WriteLine("You have blown the dragon to pieces.");
+				dragon.TakeDamage(20);
+				dragon.IsDead();
+				Console.WriteLine("You blow off one of the dragon's limbs. He takes 20 damage.");
 			}
 		}
 		else
